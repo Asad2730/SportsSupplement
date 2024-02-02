@@ -1,0 +1,11 @@
+syntax = "proto3";
+//comment this for js
+package protobufModel; // Replace with your actual Go package name
+option go_package = "./protobufModel";
+//
+
+message User {
+  string email = 1;
+  string password = 2;
+}
+
