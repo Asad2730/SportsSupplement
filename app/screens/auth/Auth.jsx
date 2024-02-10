@@ -3,9 +3,8 @@ import { colors } from "../../utils/colors";
 import { useField } from "../../hooks/useField";
 import { CustomBtn } from "../../components/CustomBtn";
 import { customStyles } from "../../utils/styles";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, signUp } from "../../store/auth/authApiRequest";
-
 
 export default function Auth({ navigation }) {
   const error = useSelector((state) => state.auth.error);
@@ -13,42 +12,36 @@ export default function Auth({ navigation }) {
   const email = useField("");
   const password = useField("");
 
-  const onSubmit = (title) => {
-    return () => { 
-      if (email.value !== "" && password.value !== "") {
-        let obj = { email: email.value, password: password.value };
-        switch (title) {
-          case "Login": {
-            signIn(obj);
-            break;
-          }
-          case "Create": {
-            signup(obj);
-            break;
-          }
-          default:
-            break;
-        }
-      }
-    };
-  };
-  
-
-  const signup = (obj) => {
-    dispatch(signUp(obj));
-    email.reset();
-    password.reset();
-    if(error != null){
-      console.error('error',error)
+  const isValid = () => {
+    if (email.value !== "" && password.value !== "") {
+      let obj = { email: email.value, password: password.value };
+      return obj;
+    } else {
+      return null;
     }
   };
 
-  const signIn = (obj) => {
-    dispatch(login(obj));
-    email.reset();
-    password.reset();
-    if(error != null){
-      console.error('error',error)
+  const create = () => {
+    let obj = isValid();
+    dispatch(signUp(obj));
+    if (obj !== null) {
+      email.reset();
+      password.reset();
+      if (error != null) {
+        console.error("error", error);
+      }
+    }
+  };
+
+  const signIn = () => {
+    let obj = isValid();
+    if (obj !== null) {
+      dispatch(login(obj));
+      email.reset();
+      password.reset();
+      if (error != null) {
+        console.error("error", error);
+      }
     }
   };
 
@@ -72,8 +65,8 @@ export default function Auth({ navigation }) {
           onChangeText={password.onChangeText}
         />
 
-        <CustomBtn text={'Login'} onClick={onSubmit('Login')} />
-        <CustomBtn text={'Create Account'} onClick={onSubmit('Create')} />
+        <CustomBtn text={"Login"} onClick={signIn} />
+        <CustomBtn text={"Create Account"} onClick={create} />
       </View>
     </View>
   );
