@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/Asad2730/SportsSupplement/conn"
@@ -11,7 +12,7 @@ import (
 
 var contentType = "application/x-protobuf"
 
-func signup(c *gin.Context) {
+func Signup(c *gin.Context) {
 	var user protobufModel.User
 	c.Header("Content-Type", "application/x-protobuf")
 
@@ -20,6 +21,8 @@ func signup(c *gin.Context) {
 		c.Data(500, contentType, []byte(err.Error()))
 		return
 	}
+
+	fmt.Println("Request Body:", string(data))
 
 	if err := proto.Unmarshal(data, &user); err != nil {
 		c.Data(402, contentType, []byte(err.Error()))
@@ -41,7 +44,7 @@ func signup(c *gin.Context) {
 
 }
 
-func login(c *gin.Context) {
+func Login(c *gin.Context) {
 
 	var request protobufModel.User
 	c.Header("Content-Type", "application/x-protobuf")
