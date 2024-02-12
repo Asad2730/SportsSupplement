@@ -15,6 +15,6 @@ func Connect() {
 		panic(err)
 	}
 	db.AutoMigrate(protobufModel.User{})
-
+	db.AutoMigrate(protobufModel.Product{})
 	Db = db
 }

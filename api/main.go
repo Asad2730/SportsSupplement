@@ -13,5 +13,6 @@ func init() {
 func main() {
 	r := gin.Default()
 	routes.UserAuthRoutes(r)
+	routes.ProductRoutes(r)
 	r.Run("0.0.0.0:3000")
 }

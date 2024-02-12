@@ -22,7 +22,6 @@ func Signup(c *gin.Context) {
 	}
 
 	if err := proto.Unmarshal(data, &user); err != nil {
-
 		c.Data(402, contentType, []byte(err.Error()))
 		return
 	}
