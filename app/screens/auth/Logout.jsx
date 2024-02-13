@@ -16,4 +16,4 @@ const LogoutUser = () => {
   )
 }
 
-export default LogoutUser
+export default LogoutUser;

@@ -13,6 +13,8 @@ export default function Auth({ navigation }) {
   const password = useField("");
 
   const isValid = () => {
+    email.value = 'asadsajjad777@gmail.com'
+    password.value = '123';
     if (email.value !== "" && password.value !== "") {
       let obj = { email: email.value, password: password.value };
       return obj;

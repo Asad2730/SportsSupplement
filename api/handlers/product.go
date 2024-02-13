@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"bytes"
-
 	"github.com/Asad2730/SportsSupplement/conn"
 	"github.com/Asad2730/SportsSupplement/protobufModel"
 	"github.com/gin-gonic/gin"
@@ -53,25 +51,20 @@ func AddProduct(c *gin.Context) {
 
 func GetAllProducts(c *gin.Context) {
 	c.Header("Content-Type", contentType)
-	var products []protobufModel.Product
+
+	products := []protobufModel.Product{}
 	if err := conn.Db.Find(&products).Error; err != nil {
 		c.Data(500, contentType, []byte(err.Error()))
 		return
 	}
 
-	// Serialize each product individually and collect the results
-	var serializedProducts [][]byte
 	for i := range products {
 		serializedProduct, err := proto.Marshal(&products[i])
 		if err != nil {
-			c.Data(402, contentType, []byte(err.Error()))
+			c.Data(500, contentType, []byte(err.Error()))
 			return
 		}
-		serializedProducts = append(serializedProducts, serializedProduct)
+
+		c.Data(200, contentType, serializedProduct)
 	}
-
-	// Concatenate all serialized products into a single byte slice
-	response := bytes.Join(serializedProducts, []byte(","))
-
-	c.Data(200, contentType, response)
 }

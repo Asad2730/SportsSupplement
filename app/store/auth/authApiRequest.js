@@ -8,7 +8,8 @@ const { User } = require('../../proto/User_pb')
 const config = {
     headers: {
         'Content-Type': 'application/protobuf',
-    }
+    },
+    responseType: 'arraybuffer',
 }
 
 export const signUp = createAsyncThunk(
@@ -21,8 +22,9 @@ export const signUp = createAsyncThunk(
             user.setPassword(password)
             const serializedData = user.serializeBinary();
             const { data } = await axios.post(`${DB_URL}/signup`, serializedData, config)
-            thunkAPI.dispatch(signUp.fulfilled(data))
-            return data;
+            const decodedUser = User.deserializeBinary(data);
+            thunkAPI.dispatch(signUp.fulfilled(decodedUser));
+            return decodedUser;
         } catch (ex) {
             thunkAPI.dispatch(signUp.rejected(ex));
             throw ex;
@@ -40,9 +42,14 @@ export const login = createAsyncThunk(
             user.setPassword(password)
             const serializedData = user.serializeBinary();
             const { data } = await axios.post(`${DB_URL}/login`, serializedData, config)
-            thunkAPI.dispatch(login.fulfilled(data))
-            return data;
+
+            const uint8Array = new Uint8Array(data);
+            const decodedUser = User.deserializeBinary(uint8Array);
+            thunkAPI.dispatch(login.fulfilled(decodedUser.toObject()));
+
+            return decodedUser.toObject();
         } catch (ex) {
+
             thunkAPI.dispatch(login.rejected(ex))
             throw ex;
         }
