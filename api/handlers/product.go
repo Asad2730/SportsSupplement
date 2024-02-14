@@ -4,12 +4,11 @@ import (
 	"github.com/Asad2730/SportsSupplement/conn"
 	"github.com/Asad2730/SportsSupplement/protobufModel"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/protobuf/proto"
 )
 
 func GetProductImage(c *gin.Context) {
 	filename := c.Param("filename")
-	c.File("products/" + filename)
+	c.File("productImages/" + filename)
 }
 
 func AddProduct(c *gin.Context) {
@@ -52,19 +51,22 @@ func AddProduct(c *gin.Context) {
 func GetAllProducts(c *gin.Context) {
 	c.Header("Content-Type", contentType)
 
-	products := []protobufModel.Product{}
+	var products []protobufModel.Product
 	if err := conn.Db.Find(&products).Error; err != nil {
 		c.Data(500, contentType, []byte(err.Error()))
 		return
 	}
+	var protoProducts []*protobufModel.Product
 
 	for i := range products {
-		serializedProduct, err := proto.Marshal(&products[i])
-		if err != nil {
-			c.Data(500, contentType, []byte(err.Error()))
-			return
-		}
-
-		c.Data(200, contentType, serializedProduct)
+		p := &products[i]
+		protoProducts = append(protoProducts, p)
 	}
+
+	productList := &protobufModel.ProductList{
+		Products: protoProducts,
+	}
+
+	c.ProtoBuf(200, productList)
+
 }

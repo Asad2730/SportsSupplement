@@ -62,12 +62,6 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	response, err := proto.Marshal(&user)
-	if err != nil {
-		c.Data(402, contentType, []byte(err.Error()))
-		return
-	}
-
-	c.Data(200, contentType, response)
+	c.ProtoBuf(200, &user)
 
 }

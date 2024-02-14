@@ -45,9 +45,10 @@ export const login = createAsyncThunk(
 
             const uint8Array = new Uint8Array(data);
             const decodedUser = User.deserializeBinary(uint8Array);
-            thunkAPI.dispatch(login.fulfilled(decodedUser.toObject()));
+            const response = decodedUser.toObject();
+            thunkAPI.dispatch(login.fulfilled(response));
 
-            return decodedUser.toObject();
+            return response;
         } catch (ex) {
 
             thunkAPI.dispatch(login.rejected(ex))

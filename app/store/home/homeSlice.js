@@ -15,6 +15,7 @@ const homeSlice = createSlice({
             state.error = null;
             state.loading = false;
             state.products = action.payload;
+            //state.products.push(...action.payload)
        })
        builder.addCase(getProducts.pending,(state,action)=>{
           state.error = null;

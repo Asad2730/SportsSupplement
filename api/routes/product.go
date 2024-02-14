@@ -6,7 +6,7 @@ import (
 )
 
 func ProductRoutes(r *gin.Engine) {
-	r.GET("/productImage/:imageName", handlers.GetProductImage)
+	r.GET("/productImage/:filename", handlers.GetProductImage)
 	r.GET("/getProducts", handlers.GetAllProducts)
 	r.POST("/addProduct", handlers.AddProduct)
 }

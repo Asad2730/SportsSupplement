@@ -10,7 +10,7 @@ message User {
 }
 
 
-G:\MyProjects\JS\SportsSupplement\proto
+c
 //for js
 protoc --js_out=import_style=commonjs,binary:. User.proto 
 
