@@ -6,7 +6,7 @@ import { customStyles } from "../../utils/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signUp } from "../../store/auth/authApiRequest";
 
-export default function Auth({ navigation }) {
+export default function Auth() {
   const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const email = useField("");
@@ -67,8 +67,8 @@ export default function Auth({ navigation }) {
           onChangeText={password.onChangeText}
         />
 
-        <CustomBtn text={"Login"} onClick={signIn} />
-        <CustomBtn text={"Create Account"} onClick={create} />
+        <CustomBtn text={"Login"} onClick={signIn} styleBtn={customStyles.button} styleTxt={customStyles.text}/>
+        <CustomBtn text={"Create Account"} onClick={create} styleBtn={customStyles.button} styleTxt={customStyles.text} />
       </View>
     </View>
   );

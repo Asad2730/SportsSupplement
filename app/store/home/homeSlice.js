@@ -14,8 +14,15 @@ const homeSlice = createSlice({
        builder.addCase(getProducts.fulfilled,(state,action)=>{
             state.error = null;
             state.loading = false;
-            state.products = action.payload;
-            //state.products.push(...action.payload)
+             //serializable..
+             //in product.proto.js file to get values of fields get methods are define e.g getId() for Id
+             state.products = action.payload.map(product => ({
+                id: product.getId(),
+                name: product.getName(),
+                image:product.getImage(),
+                description:product.getDescription(),
+                price:product.getPrice()
+            }));
        })
        builder.addCase(getProducts.pending,(state,action)=>{
           state.error = null;

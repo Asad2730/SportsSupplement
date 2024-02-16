@@ -25,5 +25,6 @@ import { colors } from "./colors";
     text: {
         color: colors.primary_color,
         fontSize: 20, 
-    }
+    },
+  
   });

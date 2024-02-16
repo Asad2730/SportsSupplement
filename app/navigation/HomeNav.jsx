@@ -4,6 +4,7 @@ import {  MaterialIcons , FontAwesome5 } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
 import LogoutUser from '../screens/auth/Logout';
 import Products from "../screens/home/Products";
+import Cart from "../screens/home/Cart";
 
 
 const Tab = createBottomTabNavigator();
@@ -14,7 +15,7 @@ export default function HomeNav() {
       screenOptions={{
         headerShown: false,
         headerShown: false,
-        tabBarActiveTintColor: colors.secondary_light,
+        tabBarActiveTintColor: colors.secondary_color,
         tabBarStyle: {
           backgroundColor: colors.primary_color,
         },
@@ -24,13 +25,20 @@ export default function HomeNav() {
         name="products"
         component={Products}
         options={{
-          tabBarLabel: "",
+          tabBarIcon: ({ color,size }) => (
+            <MaterialIcons name="view-list" size={size} color={color} />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
           tabBarIcon: ({ color,size }) => (
             <MaterialIcons name="shopping-cart" size={size} color={color} />
           ),
         }}
       />
-
       <Tab.Screen
         name="logout"
         component={LogoutUser}

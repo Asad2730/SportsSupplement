@@ -1,16 +1,16 @@
 import React from 'react';
 import { Pressable, Text } from "react-native";
-import { customStyles } from '../utils/styles';
 
 
 
-export const CustomBtn = ({ text, onClick }) => {
+
+export const CustomBtn = ({ text, onClick,styleBtn ,styleTxt }) => {
 
     return (
         <Pressable
             onPress={onClick}
-            style={customStyles.button}>
-            <Text style={customStyles.text}>{text}</Text>
+            style={styleBtn}>
+            <Text style={styleTxt}>{text}</Text>
         </Pressable>
 
     )

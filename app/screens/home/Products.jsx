@@ -1,13 +1,17 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../store/home/homeApiRequest";
-import { ActivityIndicator,StyleSheet, View , SafeAreaView, Text} from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Text,
+} from "react-native";
 import { colors } from "../../utils/colors";
-import { renderChatItem } from "../../components/ProductItems";
 import { FlashList } from "@shopify/flash-list";
-
-
-
+import ProductItem from "../../components/ProductItems";
+import { customStyles } from "../../utils/styles";
 
 const Products = () => {
   const products = useSelector((state) => state.home.products);
@@ -15,8 +19,7 @@ const Products = () => {
   const error = useSelector((state) => state.home.error);
 
   const dispatch = useDispatch();
-  
- 
+
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -29,33 +32,33 @@ const Products = () => {
 
   return (
     <>
-         {loading ? (
-             <ActivityIndicator size="large" color="#0000ff" />
-         ) : (
-            <View style={styles.container}>
-                <View style={styles.logo_container}/>
-                <View style={styles.list_container}>
-                  <SafeAreaView style={{flex:1}}>
-                    {products.length > 0 ? (
-                      <FlashList 
-                        data={products}
-                        renderItem={renderChatItem}
-                        estimatedItemSize={135}
-                      />
-                    ) : (
-                      <Text>No products available</Text>
-                    )}
-                  </SafeAreaView>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.logo_container} />
+          <View style={styles.list_container}>
+            <SafeAreaView style={{ flex: 1 }}>
+              {products.length > 0 ? (
+                <FlashList
+                  data={products}
+                  renderItem={({ item }) => <ProductItem item={item} />}
+                  estimatedItemSize={135}
+                />
+              ) : (
+                <View style={styles.center_txt}>
+                  <Text style={customStyles.text}>No products available</Text>
                 </View>
-               
-            </View>
-         )}
+              )}
+            </SafeAreaView>
+          </View>
+        </View>
+      )}
     </>
   );
 };
 
 export default Products;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -63,11 +66,15 @@ const styles = StyleSheet.create({
   },
   logo_container: {
     flex: 0.1,
-    backgroundColor:colors.secondary_color
+    backgroundColor: colors.secondary_color,
   },
   list_container: {
-    flex: 0.90,
-    backgroundColor: colors.primary_color
+    flex: 0.9,
+    backgroundColor: colors.primary_color,
   },
- 
+  center_txt: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
