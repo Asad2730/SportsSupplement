@@ -28,7 +28,6 @@ func AddProduct(c *gin.Context) {
 		map[string]interface{}{"Id": 11, "Name": "Cellucor C4 Extreme Pre Workout, 30 Servings", "Price": 4500, "Image": "12.jpg", "Description": description},
 	}
 
-	c.Header("Content-Type", contentType)
 	for _, p := range products {
 		productData := p.(map[string]interface{})
 		product := &protobufModel.Product{
@@ -40,27 +39,25 @@ func AddProduct(c *gin.Context) {
 		}
 
 		if err := conn.Db.Create(&product).Error; err != nil {
-			c.Data(500, contentType, []byte(err.Error()))
+			c.ProtoBuf(500, err.Error())
 			return
 		}
 
-		c.Data(201, contentType, []byte("Prodcut Created"))
+		c.ProtoBuf(201, "Products Created")
 	}
 }
 
 func GetAllProducts(c *gin.Context) {
-	c.Header("Content-Type", contentType)
 
 	var products []protobufModel.Product
 	if err := conn.Db.Find(&products).Error; err != nil {
-		c.Data(500, contentType, []byte(err.Error()))
+		c.ProtoBuf(500, err.Error())
 		return
 	}
 	var protoProducts []*protobufModel.Product
 
 	for i := range products {
-		p := &products[i]
-		protoProducts = append(protoProducts, p)
+		protoProducts = append(protoProducts, &products[i])
 	}
 
 	productList := &protobufModel.ProductList{
