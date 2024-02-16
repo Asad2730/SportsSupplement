@@ -16,7 +16,7 @@
     "@reduxjs/toolkit": "^2.1.0",
     "@shopify/flash-list": "^1.6.3",
     "axios": "^1.6.7",
-    "expo": "50",
+    "expo": "^50.0.6",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.10",
     "google-protobuf": "^3.21.2",
