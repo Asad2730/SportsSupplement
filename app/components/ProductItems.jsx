@@ -19,6 +19,41 @@ const ProductItem = ({ item }) => {
   const navigation = useNavigation();
   const { add, remove, checkIfAlreadyAdded } = useCartOperations();
 
+  const QuantityComponent = () => (
+    <>
+      <CustomBtn
+        text={"+"}
+        styleBtn={customStyles.button}
+        styleTxt={customStyles.text}
+      />
+      <TextInput style={customStyles.input} keyboardType="numeric" value="0" />
+      <CustomBtn
+        text={"-"}
+        styleBtn={customStyles.button}
+        styleTxt={customStyles.text}
+      />
+    </>
+  );
+
+
+  const Add_Remove_CartComponent = ({id}) => (
+    <>
+      {checkIfAlreadyAdded(id) ? (
+          <CustomIcon
+            txt={"Remove"}
+            iconName={"remove-shopping-cart"}
+            onClick={() => remove(id)}
+          />
+        ) : (
+          <CustomIcon
+            txt={"Add"}
+            iconName={"add-shopping-cart"}
+            onClick={() => add(id)}
+          />
+        )}
+    </>
+  )
+
   return (
     <View style={styles.card}>
       <Pressable
@@ -33,25 +68,10 @@ const ProductItem = ({ item }) => {
       <View style={styles.name_container}>
         <Text style={customStyles.text}>{item.name}</Text>
       </View>
-
-        {
-          <View style={styles.btn_container}>
-            {checkIfAlreadyAdded(item.id) ? (
-              <CustomIcon
-                txt={"Remove"}
-                iconName={"remove-shopping-cart"}
-                onClick={() => remove(item.id)}
-              />
-            ) : (
-              <CustomIcon
-                txt={"Add"}
-                iconName={"add-shopping-cart"}
-                onClick={() => add(item.id)}
-              />
-            )}
-          </View>
-        }
-   
+      <View style={styles.btn_container}>
+         <QuantityComponent/>
+         <Add_Remove_CartComponent id={item.id}/>
+      </View>
     </View>
   );
 };
@@ -87,19 +107,3 @@ const styles = StyleSheet.create({
 });
 
 export default ProductItem;
-
-// <CustomBtn
-// text={"+"}
-// styleBtn={customStyles.button}
-// styleTxt={customStyles.text}
-// />
-// <TextInput
-// style={customStyles.input}
-// keyboardType="numeric"
-// value="0"
-// />
-// <CustomBtn
-// text={"-"}
-// styleBtn={customStyles.button}
-// styleTxt={customStyles.text}
-// />
