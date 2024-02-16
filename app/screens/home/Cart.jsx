@@ -1,37 +1,62 @@
-import React from "react";
-import { StyleSheet, View, SafeAreaView, Text } from "react-native";
+import React, { useCallback } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { colors } from "../../utils/colors";
-import { FlashList } from "@shopify/flash-list";
-import { useSelector } from "react-redux";
-import ProductItem from "../../components/ProductItems";
+import { useDispatch, useSelector } from "react-redux";
 import { customStyles } from "../../utils/styles";
-import { useField } from "../../hooks/useField";
+import { CustomBtn } from "../../components/CustomBtn";
+import { getSelectedProducts } from "../../store/cart/cartSlice";
+import RenderFlashList from "../../components/RenderFlashList";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Cart = () => {
   const products = useSelector((state) => state.home.products);
   const user = useSelector((state) => state.auth.user);
-  const cart = useSelector((state) => state.cart.cart);
-  const filterProducts = products.filter((i) => cart.includes(i.id));
+  const filterProducts = useSelector((state) => state.cart.selected_products);
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getSelectedProducts(products));
+    }, [dispatch, products])
+  );
   // console.log('user',user.email)
-  const qty = useField(1);
-  
+
+  const calculateTotalBill = () => {
+    let totalPrice = 0;
+    filterProducts.forEach((product) => {
+      totalPrice += product.price * product.qty;
+    });
+    return totalPrice;
+  };
+
+  const submit = () => {
+    const timestamp = Date.now();
+    const currentDate = new Date(timestamp);
+    const productIds = filterProducts.map((product) => product.id);
+    let obj = {
+      email: user.email,
+      pIds: productIds,
+      total: calculateTotalBill(),
+      date: currentDate,
+    };
+    console.log("submited", obj);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.confirm_order_container}></View>
+      <View style={styles.confirm_order_container}>
+        <Text style={customStyles.text}>
+          Your Total bill is:{calculateTotalBill()}
+        </Text>
+        <CustomBtn
+          styleBtn={styles.button}
+          styleTxt={customStyles.text}
+          text={"Confirm Order"}
+          onClick={() => submit()}
+        />
+      </View>
       <View style={styles.list_of_order_container}>
-        <SafeAreaView style={{ flex: 1 }}>
-          {filterProducts.length > 0 ? (
-            <FlashList
-              data={filterProducts}
-              renderItem={({ item }) => <ProductItem item={item} />}
-              estimatedItemSize={135}
-            />
-          ) : (
-            <View style={styles.center_txt}>
-                  <Text style={customStyles.text}>No products available</Text>
-            </View>
-          )}
-        </SafeAreaView>
+        <RenderFlashList products={filterProducts} />
       </View>
     </View>
   );
@@ -45,14 +70,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary_color,
   },
   confirm_order_container: {
-    flex: 0.3,
+    flex: 0.4,
+    justifyContent: "center",
+    alignItems: "center",
   },
   list_of_order_container: {
-    flex: 0.7,
+    flex: 0.6,
   },
-  center_txt: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
+  button: {
+    backgroundColor: colors.secondary_color,
+    margin: 10,
+    borderRadius: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "auto",
+    height: "10%",
+  },
+  item: {
+    flex: 0.5,
+  },
 });

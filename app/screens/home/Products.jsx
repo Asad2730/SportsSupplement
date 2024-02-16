@@ -5,13 +5,9 @@ import {
   ActivityIndicator,
   StyleSheet,
   View,
-  SafeAreaView,
-  Text,
 } from "react-native";
 import { colors } from "../../utils/colors";
-import { FlashList } from "@shopify/flash-list";
-import ProductItem from "../../components/ProductItems";
-import { customStyles } from "../../utils/styles";
+import RenderFlashList from "../../components/RenderFlashList";
 
 const Products = () => {
   const products = useSelector((state) => state.home.products);
@@ -38,19 +34,7 @@ const Products = () => {
         <View style={styles.container}>
           <View style={styles.logo_container} />
           <View style={styles.list_container}>
-            <SafeAreaView style={{ flex: 1 }}>
-              {products.length > 0 ? (
-                <FlashList
-                  data={products}
-                  renderItem={({ item }) => <ProductItem item={item} />}
-                  estimatedItemSize={135}
-                />
-              ) : (
-                <View style={styles.center_txt}>
-                  <Text style={customStyles.text}>No products available</Text>
-                </View>
-              )}
-            </SafeAreaView>
+            <RenderFlashList products={products}/>
           </View>
         </View>
       )}

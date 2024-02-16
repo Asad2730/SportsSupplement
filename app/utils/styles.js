@@ -26,5 +26,6 @@ import { colors } from "./colors";
         color: colors.primary_color,
         fontSize: 20, 
     },
+    
   
   });
