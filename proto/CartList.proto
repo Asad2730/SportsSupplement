@@ -1,0 +1,12 @@
+syntax = "proto3";
+//  //comment this for js
+// package protobufModel; 
+// option go_package = "./protobufModel";
+// //
+import "Cart.proto";
+
+message CartList {
+  repeated Cart carts = 1;
+}
+
+

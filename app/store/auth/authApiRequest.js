@@ -1,16 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { DB_URL } from '../../utils/helpers';
+import { DB_URL ,config} from '../../utils/helpers';
 
 const { User } = require('../../proto/User_pb')
 
 
-const config = {
-    headers: {
-        'Content-Type': 'application/protobuf',
-    },
-    responseType: 'arraybuffer',
-}
+
+
+const url = DB_URL+'/auth';
 
 export const signUp = createAsyncThunk(
     'auth/signup',
@@ -21,7 +18,7 @@ export const signUp = createAsyncThunk(
             user.setEmail(email)
             user.setPassword(password)
             const serializedData = user.serializeBinary();
-            const { data } = await axios.post(`${DB_URL}/signup`, serializedData, config)
+            const { data } = await axios.post(url, serializedData, config)
             const decodedUser = User.deserializeBinary(data);
             thunkAPI.dispatch(signUp.fulfilled(decodedUser));
             return decodedUser;
@@ -41,7 +38,7 @@ export const login = createAsyncThunk(
             user.setEmail(email)
             user.setPassword(password)
             const serializedData = user.serializeBinary();
-            const { data } = await axios.post(`${DB_URL}/login`, serializedData, config)
+            const { data } = await axios.get(url, serializedData, config)
 
             const uint8Array = new Uint8Array(data);
             const decodedUser = User.deserializeBinary(uint8Array);

@@ -7,19 +7,23 @@ import { CustomBtn } from "../../components/CustomBtn";
 import { getSelectedProducts } from "../../store/cart/cartSlice";
 import RenderFlashList from "../../components/RenderFlashList";
 import { useFocusEffect } from "@react-navigation/native";
+import uuid from 'react-native-uuid';
+import { createCart } from "../../store/cart/cartApiRequest";
 
 const Cart = () => {
   const products = useSelector((state) => state.home.products);
   const user = useSelector((state) => state.auth.user);
   const filterProducts = useSelector((state) => state.cart.selected_products);
+  const error =  useSelector((state)=>state.cart.error);
+  const loading = useSelector((state)=>state.cart.loading);
   const dispatch = useDispatch();
 
   useFocusEffect(
     useCallback(() => {
       dispatch(getSelectedProducts(products));
-    }, [dispatch, products])
+    }, [dispatch, products,loading])
   );
-  // console.log('user',user.email)
+
 
   const calculateTotalBill = () => {
     let totalPrice = 0;
@@ -34,12 +38,17 @@ const Cart = () => {
     const currentDate = new Date(timestamp);
     const productIds = filterProducts.map((product) => product.id);
     let obj = {
-      email: user.email,
+      id:uuid.v4(), 
+      useremail: user.email,
       pIds: productIds,
-      total: calculateTotalBill(),
-      date: currentDate,
+      totalBill: calculateTotalBill(),
+      orderDate: currentDate.toDateString(),
     };
-    console.log("submited", obj);
+  
+    dispatch(createCart(obj))
+    if(error !== null){
+      console.error('Error:',error)
+    }
   };
 
   return (

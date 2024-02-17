@@ -12,7 +12,11 @@ func init() {
 
 func main() {
 	r := gin.Default()
-	routes.UserAuthRoutes(r)
-	routes.ProductRoutes(r)
+	auth := r.Group("/auth")
+	products := r.Group("/products")
+	cart := r.Group("/cart")
+	routes.UserAuthRoutes(auth)
+	routes.ProductRoutes(products)
+	routes.CartRoutes(cart)
 	r.Run("0.0.0.0:3000")
 }

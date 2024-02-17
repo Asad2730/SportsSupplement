@@ -1,3 +1,14 @@
+
+cd G:\MyProjects\JS\SportsSupplement\proto
+
+//for js
+protoc --js_out=import_style=commonjs,binary:. User.proto 
+
+//for go
+
+protoc --go_out=. User.proto
+
+
 syntax = "proto3";
 //comment this for js
 package protobufModel; // Replace with your actual Go package name
@@ -8,113 +19,5 @@ message User {
   string email = 1;
   string password = 2;
 }
-
-
-c
-//for js
-protoc --js_out=import_style=commonjs,binary:. User.proto 
-
-//for go
-
-protoc --go_out=. User.proto
-
-
-
-const { User } = require('./path/to/User_pb');
-
-const user = new User();
-user.setName("John Doe");
-user.setEmail("john.doe@example.com");
-user.setPassword("securepassword");
-
-const serializedData = user.serializeBinary();
-
-fetch('http://your-go-server-endpoint', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/protobuf',
-  },
-  body: serializedData,
-})
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
-
-
-
-go get -u github.com/gin-gonic/gin
-go get -u gorm.io/gorm
-go get -u github.com/jackc/pgx/v4
-go get -u google.golang.org/protobuf/proto
-go get -u github.com/golang/protobuf/proto
-
-
-package main
-
-import (
-	"fmt"
-	"net/http"
-	"log"
-
-	"github.com/gin-gonic/gin"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"github.com/path/to/your/protobuf/User"
-)
-
-var db *gorm.DB
-
-func main() {
-	var err error
-	dsn := "user=youruser password=yourpassword dbname=yourdb sslmode=disable"
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Auto Migrate
-	err = db.AutoMigrate(&User{})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	r := gin.Default()
-
-	r.POST("/user", createUser)
-
-	r.Run(":8080")
-}
-
-func createUser(c *gin.Context) {
-	var userProto User.User
-	data, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read request body"})
-		return
-	}
-
-	err = proto.Unmarshal(data, &userProto)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse protobuf data"})
-		return
-	}
-
-	// Check if the email already exists
-	var existingUser User.User
-	if err := db.Where("email = ?", userProto.Email).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
-		return
-	}
-
-	// Create a new user in the database
-	if err := db.Create(&userProto).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
-}
-
-
 
 

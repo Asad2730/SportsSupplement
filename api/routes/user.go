@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserAuthRoutes(r *gin.Engine) {
-	r.POST("/login", handlers.Login)
-	r.POST("/signup", handlers.Signup)
+func UserAuthRoutes(r *gin.RouterGroup) {
+	r.GET("/", handlers.Login)
+	r.POST("/", handlers.Signup)
 }

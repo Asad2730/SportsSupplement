@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { createCart, getUserHistory } from './cartApiRequest';
 
 
 const cartSlice = createSlice({
@@ -6,6 +7,9 @@ const cartSlice = createSlice({
     initialState: {
         cart: [],
         selected_products: [],
+        user_history:[],
+        error:null,
+        loading:false
     },
     reducers: {
         addToCart: (state, action) => {
@@ -44,7 +48,50 @@ const cartSlice = createSlice({
         clearCart: (state, action) => {
             state.cart = []
             state.selected_products = []
+            state.user_history = []
         }
+    },
+    extraReducers:(builder)=>{
+         builder.addCase(createCart.fulfilled,(state,action)=>{
+            state.error = null;
+            state.loading = false;
+            state.cart = [];
+            state.selected_products = [];
+         })
+        
+         builder.addCase(getUserHistory.fulfilled,(state,action)=>{
+            state.error = null;
+            state.loading = false;
+            state.user_history = action.payload.map(i=>({
+               id:i.getId(),
+               email:i.getUseremail(),
+               pids:i.getPidsList(),
+               totalBill:i.getTotalbill(),
+               orderDate:i.getOrderdate(),
+            }));
+         })
+
+
+         builder.addCase(createCart.pending,(state,action)=>{
+            state.error = null;
+            state.loading = true;
+         })
+
+         builder.addCase(getUserHistory.pending,(state,action)=>{
+            state.error = null;
+            state.loading = true;
+         })
+
+
+         builder.addCase(createCart.rejected,(state,action)=>{
+            state.loading = false;
+            state.error = action.payload;
+         })
+
+         builder.addCase(getUserHistory.rejected,(state,action)=>{
+            state.loading = false;
+            state.error = action.payload;
+         })
     }
 })
 

@@ -1,71 +1,17 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  TextInput,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { customStyles } from "../utils/styles";
 import { Get_Image_url } from "../utils/helpers";
 import { colors } from "../utils/colors";
-import CustomIcon from "./CustomIconBtn";
 import { useNavigation } from "@react-navigation/native";
-import useCartOperations from "../hooks/useCartOperations";
-import { CustomBtn } from "../components/CustomBtn";
-import { useDispatch } from "react-redux";
-import { decrementQty, incrementQty } from "../store/cart/cartSlice";
+import {
+  Add_Remove_CartComponent,
+  QuantityComponent,
+} from "../hooks/productItem";
 
 const ProductItem = ({ item }) => {
   const navigation = useNavigation();
-  const dispacth =  useDispatch();
-  const { add, remove, checkIfAlreadyAdded } = useCartOperations();
-
   const isTrue = item.qty;
-
-  const QuantityComponent = ({ item }) => {
-    const id = item.id;
-    return (
-      <>
-        <CustomBtn
-          text={"+"}
-          styleBtn={styles.button}
-          styleTxt={customStyles.text}
-          onClick={()=>dispacth(incrementQty({id}))}
-        />
-        <TextInput
-          style={customStyles.input}
-          keyboardType="numeric"
-          value={item.qty.toString()}
-        />
-        <CustomBtn
-          text={"-"}
-          styleBtn={styles.button}
-          styleTxt={customStyles.text}
-          onClick={()=>dispacth(decrementQty({id}))}
-        />
-      </>
-    );
-  };
-
-  const Add_Remove_CartComponent = ({ id }) => (
-    <>
-      {checkIfAlreadyAdded(id) ? (
-        <CustomIcon
-          txt={"Remove"}
-          iconName={"remove-shopping-cart"}
-          onClick={() => remove(id)}
-        />
-      ) : (
-        <CustomIcon
-          txt={"Add"}
-          iconName={"add-shopping-cart"}
-          onClick={() => add(id)}
-        />
-      )}
-    </>
-  );
 
   return (
     <View style={styles.card}>
@@ -116,16 +62,6 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     resizeMode: "cover",
-  },
-
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "auto",
-    height: "auto",
-    backgroundColor: colors.secondary_color,
-    borderRadius: 20,
-    margin: 10,
   },
 });
 
