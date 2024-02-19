@@ -4,6 +4,8 @@
 // 	protoc        v4.25.2
 // source: ProductList.proto
 
+//comment this for js
+
 package protobufModel
 
 import (

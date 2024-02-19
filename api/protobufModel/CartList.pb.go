@@ -4,7 +4,7 @@
 // 	protoc        v4.25.2
 // source: CartList.proto
 
-// //comment this for js
+//comment this for js
 
 package protobufModel
 

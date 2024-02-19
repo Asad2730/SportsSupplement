@@ -8,4 +8,5 @@ import (
 func CartRoutes(r *gin.RouterGroup) {
 	r.GET("/:email", handlers.GetUserHistory)
 	r.POST("/", handlers.AddCart)
+	r.POST("/AddCartProduct", handlers.AddCartProduct)
 }

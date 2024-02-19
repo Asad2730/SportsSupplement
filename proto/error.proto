@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package protobufModel; // Replace with your actual Go package name
+option go_package = "./protobufModel";
+
+
+message Error {
+    string message = 1;
+}

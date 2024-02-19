@@ -39,31 +39,37 @@ func AddProduct(c *gin.Context) {
 		}
 
 		if err := conn.Db.Create(&product).Error; err != nil {
-			c.ProtoBuf(500, err.Error())
+			c.ProtoBuf(500, getError(err.Error()))
 			return
 		}
 
-		c.ProtoBuf(201, "Products Created")
+		c.ProtoBuf(201, getSuccess("Products Created"))
 	}
 }
 
 func GetAllProducts(c *gin.Context) {
 
-	var products []protobufModel.Product
+	var products []*protobufModel.Product
 	if err := conn.Db.Find(&products).Error; err != nil {
-		c.ProtoBuf(500, err.Error())
+		c.ProtoBuf(500, getError(err.Error()))
 		return
-	}
-	var protoProducts []*protobufModel.Product
-
-	for i := range products {
-		protoProducts = append(protoProducts, &products[i])
 	}
 
 	productList := &protobufModel.ProductList{
-		Products: protoProducts,
+		Products: products,
 	}
 
 	c.ProtoBuf(200, productList)
 
+}
+
+func getProductById(id int32) (*protobufModel.Product, error) {
+
+	var product *protobufModel.Product
+	if err := conn.Db.First(&product, id).Error; err != nil {
+
+		return nil, err
+	}
+
+	return product, nil
 }

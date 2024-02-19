@@ -38,16 +38,13 @@ export const login = createAsyncThunk(
             user.setEmail(email)
             user.setPassword(password)
             const serializedData = user.serializeBinary();
-            const { data } = await axios.get(url, serializedData, config)
-
+            const { data } = await axios.post(`${url}/login`, serializedData, config)
             const uint8Array = new Uint8Array(data);
             const decodedUser = User.deserializeBinary(uint8Array);
             const response = decodedUser.toObject();
             thunkAPI.dispatch(login.fulfilled(response));
-
             return response;
         } catch (ex) {
-
             thunkAPI.dispatch(login.rejected(ex))
             throw ex;
         }

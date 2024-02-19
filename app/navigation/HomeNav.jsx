@@ -5,6 +5,7 @@ import { colors } from "../utils/colors";
 import LogoutUser from '../screens/auth/Logout';
 import Products from "../screens/home/Products";
 import Cart from "../screens/home/Cart";
+import History from "../screens/home/History";
 
 
 const Tab = createBottomTabNavigator();
@@ -36,6 +37,15 @@ export default function HomeNav() {
         options={{
           tabBarIcon: ({ color,size }) => (
             <MaterialIcons name="shopping-cart" size={size} color={color} />
+          ),
+        }}
+      />
+        <Tab.Screen
+        name="History"
+        component={History}
+        options={{
+          tabBarIcon: ({ color,size }) => (
+            <MaterialIcons name="history" size={size} color={color} />
           ),
         }}
       />

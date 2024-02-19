@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createCart, getUserHistory } from './cartApiRequest';
+import { createCart, createCartAssociate, getUserHistory } from './cartApiRequest';
 
 
 const cartSlice = createSlice({
@@ -7,9 +7,9 @@ const cartSlice = createSlice({
     initialState: {
         cart: [],
         selected_products: [],
-        user_history:[],
-        error:null,
-        loading:false
+        user_history: [],
+        error: null,
+        loading: false
     },
     reducers: {
         addToCart: (state, action) => {
@@ -19,9 +19,9 @@ const cartSlice = createSlice({
         },
         removeFromCart: (state, action) => {
             state.cart = state.cart.filter(item => item !== action.payload);
-            if(state.selected_products.length > 0){
+            if (state.selected_products.length > 0) {
                 state.selected_products = state.selected_products.filter(item => item.id !== action.payload);
-            }    
+            }
         },
         getSelectedProducts: (state, action) => {
             state.selected_products = action.payload.filter((product) => state.cart.includes(product.id))
@@ -51,50 +51,67 @@ const cartSlice = createSlice({
             state.user_history = []
         }
     },
-    extraReducers:(builder)=>{
-         builder.addCase(createCart.fulfilled,(state,action)=>{
+    extraReducers: (builder) => {
+        builder.addCase(createCart.fulfilled, (state, action) => {
             state.error = null;
             state.loading = false;
             state.cart = [];
             state.selected_products = [];
-         })
-        
-         builder.addCase(getUserHistory.fulfilled,(state,action)=>{
+        })
+        builder.addCase(createCartAssociate.fulfilled, (state, action) => {
             state.error = null;
             state.loading = false;
-            state.user_history = action.payload.map(i=>({
-               id:i.getId(),
-               email:i.getUseremail(),
-               pids:i.getPidsList(),
-               totalBill:i.getTotalbill(),
-               orderDate:i.getOrderdate(),
-            }));
-         })
+            state.cart = [];
+            state.selected_products = [];
+        })
+        builder.addCase(getUserHistory.fulfilled, (state, action) => {
+            state.error = null;
+            state.loading = false;
+            const { productList, cartList } = action.payload;
+
+            state.user_history = {
+                products: productList,
+                carts: cartList
+            };
+
+          
+
+        })
 
 
-         builder.addCase(createCart.pending,(state,action)=>{
+        builder.addCase(createCart.pending, (state, action) => {
             state.error = null;
             state.loading = true;
-         })
+        })
 
-         builder.addCase(getUserHistory.pending,(state,action)=>{
+        builder.addCase(createCartAssociate.pending, (state, action) => {
             state.error = null;
             state.loading = true;
-         })
+        })
+
+        builder.addCase(getUserHistory.pending, (state, action) => {
+            state.error = null;
+            state.loading = true;
+        })
 
 
-         builder.addCase(createCart.rejected,(state,action)=>{
+        builder.addCase(createCart.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-         })
+        })
 
-         builder.addCase(getUserHistory.rejected,(state,action)=>{
+        builder.addCase(createCartAssociate.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-         })
+        })
+
+        builder.addCase(getUserHistory.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
     }
 })
 
 
-export const { addToCart, removeFromCart, clearCart ,getSelectedProducts,incrementQty,decrementQty} = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, getSelectedProducts, incrementQty, decrementQty } = cartSlice.actions;
 export default cartSlice.reducer

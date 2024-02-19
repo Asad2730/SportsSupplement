@@ -8,7 +8,7 @@ import { getSelectedProducts } from "../../store/cart/cartSlice";
 import RenderFlashList from "../../components/RenderFlashList";
 import { useFocusEffect } from "@react-navigation/native";
 import uuid from 'react-native-uuid';
-import { createCart } from "../../store/cart/cartApiRequest";
+import { createCart, createCartAssociate } from "../../store/cart/cartApiRequest";
 
 const Cart = () => {
   const products = useSelector((state) => state.home.products);
@@ -21,6 +21,7 @@ const Cart = () => {
   useFocusEffect(
     useCallback(() => {
       dispatch(getSelectedProducts(products));
+ 
     }, [dispatch, products,loading])
   );
 
@@ -34,18 +35,29 @@ const Cart = () => {
   };
 
   const submit = () => {
+    const cid =uuid.v4();
     const timestamp = Date.now();
     const currentDate = new Date(timestamp);
-    const productIds = filterProducts.map((product) => product.id);
-    let obj = {
-      id:uuid.v4(), 
+   
+    let obj1 = {
+      id: cid, 
       useremail: user.email,
-      pIds: productIds,
       totalBill: calculateTotalBill(),
       orderDate: currentDate.toDateString(),
     };
-  
-    dispatch(createCart(obj))
+    
+   dispatch(createCart(obj1))
+    filterProducts.map((product) => {
+      const id =uuid.v4();
+      let obj2 = {
+        id: id,
+        cid: cid, 
+        pId: product.id,
+      };
+      
+      dispatch(createCartAssociate(obj2))
+    });
+    
     if(error !== null){
       console.error('Error:',error)
     }

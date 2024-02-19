@@ -14,8 +14,11 @@ func Connect() {
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(protobufModel.User{})
-	db.AutoMigrate(protobufModel.Product{})
-	db.AutoMigrate(protobufModel.Cart{})
+
+	db.AutoMigrate(&protobufModel.User{})
+	db.AutoMigrate(&protobufModel.Product{})
+	db.AutoMigrate(&protobufModel.Cart{})
+	db.AutoMigrate(&protobufModel.CartProduct{})
+
 	Db = db
 }

@@ -2,11 +2,11 @@
 cd G:\MyProjects\JS\SportsSupplement\proto
 
 //for js
-protoc --js_out=import_style=commonjs,binary:. User.proto 
+protoc --js_out=import_style=commonjs,binary:. Cart.proto 
 
 //for go
 
-protoc --go_out=. User.proto
+protoc --go_out=. Cart.proto
 
 
 syntax = "proto3";

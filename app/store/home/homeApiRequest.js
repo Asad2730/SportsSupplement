@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DB_URL, config } from '../../utils/helpers';
 
 const { ProductList } = require('../../proto/ProductList_pb');
-const { Product } = require('../../proto/Product_pb');
+
 
 
 const url = DB_URL+'/products';
@@ -16,8 +16,7 @@ export const getProducts = createAsyncThunk(
             const { data } = await axios.get(url, config);
             const arrayBuffer = new Uint8Array(data);
             const productList = ProductList.deserializeBinary(arrayBuffer);
-             let products = new Product();
-            products = productList.getProductsList();
+            const products = productList.getProductsList();
             thunkAPI.dispatch(getProducts.fulfilled(products));
             return products;
 

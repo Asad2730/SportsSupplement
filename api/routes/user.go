@@ -6,6 +6,6 @@ import (
 )
 
 func UserAuthRoutes(r *gin.RouterGroup) {
-	r.GET("/", handlers.Login)
+	r.POST("/login", handlers.Login)
 	r.POST("/", handlers.Signup)
 }

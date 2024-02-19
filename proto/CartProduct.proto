@@ -2,12 +2,11 @@ syntax = "proto3";
  //comment this for js
 package protobufModel; // Replace with your actual Go package name
 option go_package = "./protobufModel";
+// 
 
-message Cart {
-  string Id = 1;
-  string userEmail = 2;
-  uint32 totalBill = 3;
-  string orderDate = 4;
-}
-
+message CartProduct {
+    string Id = 1;
+    string cId = 2;
+    int32 pId = 3;
+  }
 
