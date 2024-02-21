@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { customStyles } from "../utils/styles";
 import { Get_Image_url } from "../utils/helpers";
-import { colors } from "../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 import {
   Add_Remove_CartComponent,
@@ -11,10 +10,10 @@ import {
 
 const ProductItem = ({ item }) => {
   const navigation = useNavigation();
-  const isTrue = item.qty;
-
+  const isCart = item.qty;
+  const isHistory = item.isHistory;
   return (
-    <View style={styles.card}>
+    <View style={customStyles.card}>
       <Pressable
         style={styles.image_container}
         onPress={() => navigation.navigate("product-detail", { product: item })}
@@ -28,26 +27,14 @@ const ProductItem = ({ item }) => {
         <Text style={customStyles.text}>{item.name}</Text>
       </View>
       <View style={styles.btn_container}>
-        {isTrue ? <QuantityComponent item={item} /> : null}
-        <Add_Remove_CartComponent id={item.id} />
+        {isCart ? <QuantityComponent item={item} /> : null}
+        {isHistory ? null : <Add_Remove_CartComponent id={item.id} />}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    marginTop: 5,
-    marginBottom: 5,
-    flex: 1,
-    borderRadius: 10,
-    borderColor: colors.secondary_color,
-    borderWidth: 1,
-    overflow: "hidden",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 10,
-  },
   image_container: {
     flex: 0.3,
   },

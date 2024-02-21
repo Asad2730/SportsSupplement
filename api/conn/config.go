@@ -18,7 +18,5 @@ func Connect() {
 	db.AutoMigrate(&protobufModel.User{})
 	db.AutoMigrate(&protobufModel.Product{})
 	db.AutoMigrate(&protobufModel.Cart{})
-	db.AutoMigrate(&protobufModel.CartProduct{})
-
 	Db = db
 }

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createCart, createCartAssociate, getUserHistory } from './cartApiRequest';
+import { createCart, getUserHistory } from './cartApiRequest';
 
 
 const cartSlice = createSlice({
@@ -58,36 +58,25 @@ const cartSlice = createSlice({
             state.cart = [];
             state.selected_products = [];
         })
-        builder.addCase(createCartAssociate.fulfilled, (state, action) => {
-            state.error = null;
-            state.loading = false;
-            state.cart = [];
-            state.selected_products = [];
-        })
+      
         builder.addCase(getUserHistory.fulfilled, (state, action) => {
             state.error = null;
-            state.loading = false;
-            const { productList, cartList } = action.payload;
-
-            state.user_history = {
-                products: productList,
-                carts: cartList
-            };
-
-          
-
+            state.loading = false;  
+           state.user_history =  action.payload.map(cart => ({
+                id: cart.getId(),
+                userEmail: cart.getUseremail(),
+                totalBill:cart.getTotalbill(),
+                orderDate:cart.getOrderdate(),
+                pids: Array.from(cart.getPids()) 
+            }));
         })
-
-
+      
         builder.addCase(createCart.pending, (state, action) => {
             state.error = null;
             state.loading = true;
         })
 
-        builder.addCase(createCartAssociate.pending, (state, action) => {
-            state.error = null;
-            state.loading = true;
-        })
+       
 
         builder.addCase(getUserHistory.pending, (state, action) => {
             state.error = null;
@@ -100,11 +89,7 @@ const cartSlice = createSlice({
             state.error = action.payload;
         })
 
-        builder.addCase(createCartAssociate.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        })
-
+     
         builder.addCase(getUserHistory.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;

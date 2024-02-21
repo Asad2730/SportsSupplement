@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { colors } from "../../utils/colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { getSelectedProducts } from "../../store/cart/cartSlice";
 import RenderFlashList from "../../components/RenderFlashList";
 import { useFocusEffect } from "@react-navigation/native";
 import uuid from 'react-native-uuid';
-import { createCart, createCartAssociate } from "../../store/cart/cartApiRequest";
+import { createCart, getUserHistory } from "../../store/cart/cartApiRequest";
 
 const Cart = () => {
   const products = useSelector((state) => state.home.products);
@@ -25,6 +25,12 @@ const Cart = () => {
     }, [dispatch, products,loading])
   );
 
+  
+  useEffect(()=>{
+    if(error !== null){
+      console.error('Error:',error)
+    }
+  },[error])
 
   const calculateTotalBill = () => {
     let totalPrice = 0;
@@ -34,33 +40,22 @@ const Cart = () => {
     return totalPrice;
   };
 
-  const submit = () => {
+  const submit = async () => {
     const cid =uuid.v4();
     const timestamp = Date.now();
     const currentDate = new Date(timestamp);
-   
-    let obj1 = {
+    const pids =  filterProducts.map((product)=>product.id);
+ 
+    let obj = {
       id: cid, 
       useremail: user.email,
       totalBill: calculateTotalBill(),
       orderDate: currentDate.toDateString(),
+      pids :pids
     };
     
-   dispatch(createCart(obj1))
-    filterProducts.map((product) => {
-      const id =uuid.v4();
-      let obj2 = {
-        id: id,
-        cid: cid, 
-        pId: product.id,
-      };
-      
-      dispatch(createCartAssociate(obj2))
-    });
-    
-    if(error !== null){
-      console.error('Error:',error)
-    }
+   await dispatch(createCart(obj))
+   await dispatch(getUserHistory(user.email));
   };
 
   return (

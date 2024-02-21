@@ -32,28 +32,6 @@ func AddCart(c *gin.Context) {
 
 }
 
-func AddCartProduct(c *gin.Context) {
-	var CartProduct protobufModel.CartProduct
-	data, err := io.ReadAll(c.Request.Body)
-	if err != nil {
-		c.ProtoBuf(501, getError(err.Error()))
-		return
-	}
-
-	if err := proto.Unmarshal(data, &CartProduct); err != nil {
-		c.ProtoBuf(402, getError(err.Error()))
-		return
-	}
-
-	if err := conn.Db.Create(&CartProduct).Error; err != nil {
-		c.ProtoBuf(500, err.Error())
-		return
-	}
-
-	c.ProtoBuf(201, getSuccess("Cart Associate (CartProduct) Added"))
-
-}
-
 func GetUserHistory(c *gin.Context) {
 
 	email := c.Param("email")
@@ -63,42 +41,10 @@ func GetUserHistory(c *gin.Context) {
 		c.ProtoBuf(409, getError(err.Error()))
 		return
 	}
-
 	cartList := &protobufModel.CartList{
 		Carts: carts,
 	}
 
-	var products []*protobufModel.Product
-	var cartProducts []*protobufModel.CartProduct
-
-	for _, cart := range carts {
-		var cartProduct []*protobufModel.CartProduct
-		if err := conn.Db.Where(&protobufModel.CartProduct{Id: cart.GetId()}).Find(&cartProduct).Error; err != nil {
-			c.ProtoBuf(500, getError(err.Error()))
-			return
-		}
-		cartProducts = append(cartProducts, cartProduct...)
-	}
-
-	for _, i := range cartProducts {
-		res, err := getProductById(i.GetPId())
-
-		if err != nil {
-			c.ProtoBuf(500, getError(err.Error()))
-			return
-		}
-		products = append(products, res)
-	}
-
-	productList := &protobufModel.ProductList{
-		Products: products,
-	}
-
-	result := &protobufModel.HistoryList{
-		Products: productList,
-		Carts:    cartList,
-	}
-
-	c.ProtoBuf(200, result)
+	c.ProtoBuf(200, cartList)
 
 }

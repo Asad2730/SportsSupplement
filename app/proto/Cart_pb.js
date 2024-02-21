@@ -78,7 +78,8 @@ proto.Cart.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     useremail: jspb.Message.getFieldWithDefault(msg, 2, ""),
     totalbill: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    orderdate: jspb.Message.getFieldWithDefault(msg, 4, "")
+    orderdate: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    pids: msg.getPids_asB64()
   };
 
   if (includeInstance) {
@@ -130,6 +131,10 @@ proto.Cart.deserializeBinaryFromReader = function(msg, reader) {
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setOrderdate(value);
+      break;
+    case 5:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setPids(value);
       break;
     default:
       reader.skipField();
@@ -185,6 +190,13 @@ proto.Cart.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getPids_asU8();
+  if (f.length > 0) {
+    writer.writeBytes(
+      5,
       f
     );
   }
@@ -260,6 +272,48 @@ proto.Cart.prototype.getOrderdate = function() {
  */
 proto.Cart.prototype.setOrderdate = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional bytes pids = 5;
+ * @return {!(string|Uint8Array)}
+ */
+proto.Cart.prototype.getPids = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * optional bytes pids = 5;
+ * This is a type-conversion wrapper around `getPids()`
+ * @return {string}
+ */
+proto.Cart.prototype.getPids_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getPids()));
+};
+
+
+/**
+ * optional bytes pids = 5;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getPids()`
+ * @return {!Uint8Array}
+ */
+proto.Cart.prototype.getPids_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getPids()));
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
+ * @return {!proto.Cart} returns this
+ */
+proto.Cart.prototype.setPids = function(value) {
+  return jspb.Message.setProto3BytesField(this, 5, value);
 };
 
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View, Text,StyleSheet } from "react-native";
+import { SafeAreaView, View, Text } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import ProductItem from "./ProductItems"
 import { customStyles } from "../utils/styles";
@@ -15,7 +15,7 @@ export default RenderFlashList = ({products}) => {
         estimatedItemSize={135}
       />
     ) : (
-      <View style={styles.center_txt}>
+      <View style={customStyles.center_txt}>
         <Text style={customStyles.text}>No products available</Text>
       </View>
     )}
@@ -23,10 +23,3 @@ export default RenderFlashList = ({products}) => {
    )
 }
 
-const styles = StyleSheet.create({
-    center_txt: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      },
-});

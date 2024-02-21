@@ -62,14 +62,3 @@ func GetAllProducts(c *gin.Context) {
 	c.ProtoBuf(200, productList)
 
 }
-
-func getProductById(id int32) (*protobufModel.Product, error) {
-
-	var product *protobufModel.Product
-	if err := conn.Db.First(&product, id).Error; err != nil {
-
-		return nil, err
-	}
-
-	return product, nil
-}
