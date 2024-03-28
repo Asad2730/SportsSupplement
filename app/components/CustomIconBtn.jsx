@@ -15,7 +15,7 @@ export default function CustomIcon({ txt, onClick, iconName }) {
 const styles = StyleSheet.create({
   conatiner: {
     flex: 0.9,
-    backgroundColor: colors.secondary_color,
+    flexDirection:'row',
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,4 +1,5 @@
-import { StyleSheet, TextInput } from "react-native";
+import React from "react";
+import { StyleSheet, View, TextInput } from "react-native";
 import { CustomBtn } from "../components/CustomBtn";
 import { decrementQty, incrementQty } from "../store/cart/cartSlice";
 import { customStyles } from "../utils/styles";
@@ -8,19 +9,19 @@ import CustomIcon from "../components/CustomIconBtn";
 import { colors } from "../utils/colors";
 
 export const QuantityComponent = ({ item }) => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   const id = item.id;
   return (
-    <>
+    <View style={styles.container}>
       <CustomBtn
         text={"+"}
         styleBtn={styles.button}
         styleTxt={customStyles.text}
-        onClick={() => dispacth(incrementQty({ id }))}
+        onClick={() => dispatch(incrementQty({ id }))}
       />
       <TextInput
-        style={customStyles.input}
+        style={styles.input}
         keyboardType="numeric"
         value={item.qty.toString()}
       />
@@ -28,16 +29,16 @@ export const QuantityComponent = ({ item }) => {
         text={"-"}
         styleBtn={styles.button}
         styleTxt={customStyles.text}
-        onClick={() => dispacth(decrementQty({ id }))}
+        onClick={() => dispatch(decrementQty({ id }))}
       />
-    </>
+    </View>
   );
 };
 
 export const Add_Remove_CartComponent = ({ id }) => {
   const { add, remove, checkIfAlreadyAdded } = useCartOperations();
   return (
-    <>
+    <View style={styles.container}>
       {checkIfAlreadyAdded(id) ? (
         <CustomIcon
           txt={"Remove"}
@@ -51,18 +52,27 @@ export const Add_Remove_CartComponent = ({ id }) => {
           onClick={() => add(id)}
         />
       )}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
+  container: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    width: "auto",
-    height: "auto",
+  },
+  button: {
+   
     backgroundColor: colors.secondary_color,
     borderRadius: 20,
-    margin: 10,
+   
   },
+  input: {
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 60,
+    backgroundColor:  colors.secondary_color,
+    paddingLeft: 20,
+  },
+ 
 });

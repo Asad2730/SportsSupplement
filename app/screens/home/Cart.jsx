@@ -21,7 +21,6 @@ const Cart = () => {
   useFocusEffect(
     useCallback(() => {
       dispatch(getSelectedProducts(products));
- 
     }, [dispatch, products,loading])
   );
 
@@ -62,7 +61,7 @@ const Cart = () => {
     <View style={styles.container}>
       <View style={styles.confirm_order_container}>
         <Text style={customStyles.text}>
-          Your Total bill is:{calculateTotalBill()}
+          Your Total bill is : {calculateTotalBill()}
         </Text>
         <CustomBtn
           styleBtn={styles.button}
@@ -83,15 +82,17 @@ export default Cart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary_color,
+    backgroundColor: colors.secondary_color,
   },
   confirm_order_container: {
-    flex: 0.4,
+    flex: 0.2,
     justifyContent: "center",
     alignItems: "center",
+    marginTop:20,
+    backgroundColor:colors.primary_color
   },
   list_of_order_container: {
-    flex: 0.6,
+    flex: 0.8,
   },
   button: {
     backgroundColor: colors.secondary_color,
@@ -99,8 +100,9 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: "center",
     justifyContent: "center",
-    width: "auto",
-    height: "10%",
+    width: "60%",
+    height: 50, 
+  
   },
   item: {
     flex: 0.5,

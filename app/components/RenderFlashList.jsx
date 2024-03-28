@@ -11,8 +11,9 @@ export default RenderFlashList = ({products}) => {
     {products.length > 0 ? (
       <FlashList
         data={products}
-        renderItem={({ item }) => <ProductItem item={item} />}
-        estimatedItemSize={135}
+        renderItem={({ item , index}) => <ProductItem item={item}  index={index} />}
+        estimatedItemSize={200}
+        numColumns={2}
       />
     ) : (
       <View style={customStyles.center_txt}>

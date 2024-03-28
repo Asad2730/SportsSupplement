@@ -34,7 +34,7 @@ const Products = () => {
         <View style={styles.container}>
           <View style={styles.logo_container} />
           <View style={styles.list_container}>
-            <RenderFlashList products={products}/>
+            <RenderFlashList products={products} />
           </View>
         </View>
       )}
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
   },
   logo_container: {
     flex: 0.1,
-    backgroundColor: colors.secondary_color,
+    backgroundColor: colors.primary_color,
   },
   list_container: {
     flex: 0.9,
-    backgroundColor: colors.primary_color,
+    backgroundColor: colors.secondary_color,
   },
   center_txt: {
     flex: 1,

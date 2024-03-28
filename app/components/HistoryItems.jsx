@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   card_color: {
-    backgroundColor: colors.secondary_light,
+    backgroundColor: colors.secondary_color,
   },
   txt_color: {
-    color: colors.secondary_color,
+    color: colors.secondary_light,
   },
 });

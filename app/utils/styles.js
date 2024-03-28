@@ -2,13 +2,14 @@ import { StyleSheet } from "react-native";
 import { colors } from "./colors";
 
 
+
  export const customStyles = StyleSheet.create({
     input: {
       borderWidth: 1,
       height: "10%",
       margin: 10,
       borderRadius: 60,
-      backgroundColor: colors.secondary_light,
+      backgroundColor:  colors.secondary_color,
       paddingLeft: 20,
     },
     button: {
@@ -23,21 +24,17 @@ import { colors } from "./colors";
         margin:10,
     },
     text: {
-        color: colors.primary_color,
-        fontSize: 20, 
+        color: colors.secondary_light,
     },
     card: {
-      marginTop: 5,
-      marginBottom: 5,
-      flex: 1,
+      width:'90%',
+      margin:12,
+      padding:6,
       borderRadius: 10,
-      borderColor: colors.secondary_color,
+      borderColor: colors.primary_color,
       borderWidth: 1,
       overflow: "hidden",
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 10,
-      backgroundColor:colors.primary_color
+    
     },
     center_txt: {
       flex: 1,
