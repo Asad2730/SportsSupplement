@@ -22,7 +22,9 @@ const ProductItem = ({ item, index }) => {
   const navigation = useNavigation();
   const isCart = item.qty;
   const isHistory = item.isHistory;
-  const [backgroundColor, setBackgroundColor] = useState(
+
+
+    const [backgroundColor, setBackgroundColor] = useState(
     colors.card_back_ground_2
   );
 
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
   image: {
     height: 100,
     width: 100,
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
 });
 
